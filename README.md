@@ -1,5 +1,7 @@
 # Poem Generator LLM Project
 
+![Conceptual Architecture](conceptual_diagram.png)
+
 A project to fine-tune a small LLM using LoRA on Ollama to generate poems based on time, date, and location inputs. The project works with Python 3.12+ and uses Ollama to interface with local LLMs.
 
 ## Project Structure
