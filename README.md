@@ -4,12 +4,28 @@
 
 A project to fine-tune a small LLM using LoRA on Ollama to generate poems based on time, date, and location inputs. The project works with Python 3.12+ and uses Ollama to interface with local LLMs.
 
+## Project Overview
+
+This project enables the generation of contextually aware poems by:
+1. Creating a synthetic dataset of poems with time, date, and location metadata
+2. Processing this data into an instruction-tuning format
+3. Fine-tuning a Language Model using LoRA (Low-Rank Adaptation)
+4. Creating an Ollama model for poem generation
+5. Providing a user-friendly interface for generating poems
+
+The generated poems take into account contextual factors like time of day, season, and location to create more relevant and atmospheric poetry.
+
 ## Project Structure
 
-- `data/raw`: Raw poem datasets
-- `data/processed`: Processed and formatted data for training
-- `src`: Source code for the project
+- `data/raw`: Raw poem datasets (synthetic_poems.json, test_poems.json)
+- `data/processed`: Processed and formatted data for training (training_data.json, train.json, val.json)
+- `src`: Source code for the project (generate_poem.py)
 - `scripts`: Utility scripts for data processing and model training
+  - `process_data.py`: Creates and processes synthetic poem data
+  - `train_model.py`: Fine-tunes model using LoRA
+  - `test_integration.py`: Tests the complete pipeline
+  - `test_data_process.py`: Created during testing for small dataset generation
+- `test_model`: Contains template Modelfile for Ollama integration
 - `venv`: Virtual environment (created during setup)
 
 ## Setup
@@ -50,6 +66,44 @@ ollama list
 - Python 3.12+
 - Ollama installed and running
 - Base model llama3.1:8b pulled in Ollama
+- Required libraries (detailed in requirements.txt):
+  - PEFT and transformers for fine-tuning
+  - PyTorch for ML backend
+  - Datasets for data management
+  - Ollama-python for API integration
+  - Astral for sun position calculations
+
+## Data Pipeline
+
+The data processing pipeline (`process_data.py`) performs the following steps:
+
+1. Generates a synthetic dataset of 500 poems with metadata
+2. Assigns appropriate themes based on time of day and season
+3. Formats data for instruction tuning with diverse prompts
+4. Creates train/validation splits (90%/10%)
+
+The dataset includes:
+- Time and date information
+- Location names
+- Time of day classification (morning, day, evening, night)
+- Seasonal context (spring, summer, autumn, winter)
+- Thematic elements appropriate to the context
+
+## Model Training
+
+The training script (`train_model.py`) handles:
+
+1. Model preparation by mapping Ollama models to HuggingFace equivalents
+2. LoRA configuration for efficient fine-tuning
+3. Fine-tuning using HuggingFace Trainer API
+4. Saving LoRA weights
+5. Creating a Modelfile for Ollama integration
+
+LoRA Configuration:
+- Default rank (r): 8
+- Default alpha: 16
+- Default dropout: 0.1
+- Target modules: q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj
 
 ## Usage
 
@@ -63,9 +117,14 @@ source venv/bin/activate
 python scripts/process_data.py
 ```
 
-2. Fine-tune model:
+2. Fine-tune model (with default parameters):
 ```
 python scripts/train_model.py
+```
+
+   Or with custom parameters:
+```
+python scripts/train_model.py --base_model llama3.1:8b --output_dir ./lora_model --batch_size 4 --epochs 3 --learning_rate 2e-4
 ```
 
 3. Generate poems in interactive mode:
@@ -75,8 +134,23 @@ python src/generate_poem.py --interactive
 
 4. Or generate a specific poem:
 ```
-python src/generate_poem.py --model llama3.1:8b --time "18:30" --date "2023-10-21" --location "Paris"
+python src/generate_poem.py --model llama3.1:8b --time "18:30" --date "2023-10-21" --location "Paris" --temperature 0.7
 ```
+
+## Poem Generation
+
+The generation script (`generate_poem.py`) works by:
+
+1. Taking time, date, location, and temperature inputs
+2. Extracting contextual information:
+   - Time of day (morning, afternoon, evening, night)
+   - Season (spring, summer, autumn, winter)
+   - Attempting to get sun position information
+3. Creating a prompt with this context
+4. Using the Ollama API to generate a poem
+5. Providing both interactive and command-line modes
+
+The context extraction enhances poem quality by providing relevant atmospheric details to the model.
 
 ## Examples
 
@@ -157,6 +231,11 @@ The project works with the following Ollama models:
 - You can also use any other LLM available in your Ollama installation
 - After training, you can create a custom model following the Modelfile template in test_model/
 
+HuggingFace model mapping for training:
+- llama3.1:8b maps to TinyLlama/TinyLlama-1.1B-Chat-v1.0
+- mistral maps to mistralai/Mistral-7B-v0.1
+- llama2 maps to TinyLlama/TinyLlama-1.1B-Chat-v1.0
+
 ## Testing
 
 Run the integration test to verify your setup:
@@ -166,9 +245,24 @@ python scripts/test_integration.py
 
 This will:
 - Check if Ollama is installed and running
-- Process a small test dataset
+- Process a small test dataset (5 poems)
 - Create a sample Modelfile
-- Generate a test poem
+- Test poem generation using an existing Ollama model
+
+## Limitations and Future Improvements
+
+Current limitations:
+- Synthetic data is template-based and may lack diversity
+- Limited mapping between Ollama and HuggingFace models
+- Location handling uses only names without geocoding
+- LoRA configuration might not be optimal for all model architectures
+
+Potential improvements:
+- Use real poem datasets or more sophisticated generation
+- Improve location handling with proper geocoding
+- Add evaluation metrics for poem quality
+- Implement user feedback mechanism
+- Expand model compatibility
 
 ## License
 
