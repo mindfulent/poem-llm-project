@@ -1,0 +1,295 @@
+/* Base styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary-color: #3a6ea5;
+  --secondary-color: #f0f7ff;
+  --accent-color: #c0392b;
+  --text-color: #333;
+  --light-text: #666;
+  --background-color: #f8f5f2;
+  --card-background: #fff;
+  --poem-background: #fffef7;
+  --border-color: #e0e0e0;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --focus-outline: 2px solid #3a6ea5;
+}
+
+body {
+  font-family: 'Georgia', serif;
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: var(--card-background);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  overflow: hidden;
+}
+
+/* Typography */
+h1, h2, h3 {
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+h1 {
+  margin-bottom: 10px;
+  font-size: 2.5rem;
+}
+
+.subtitle {
+  font-style: italic;
+  opacity: 0.9;
+}
+
+/* Layout components */
+header {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 30px 20px;
+  text-align: center;
+}
+
+main {
+  padding: 20px;
+}
+
+section {
+  margin-bottom: 20px;
+}
+
+.info-box {
+  background-color: var(--secondary-color);
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-left: 4px solid var(--primary-color);
+}
+
+.poem-box {
+  background-color: var(--poem-background);
+  border-radius: 8px;
+  padding: 30px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border-color);
+  min-height: 300px;
+  position: relative;
+}
+
+#poem-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  color: #2c3e50;
+}
+
+#poem-text {
+  font-family: 'Georgia', serif;
+  white-space: pre-wrap;
+  line-height: 1.8;
+  font-size: 1.1rem;
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Loading state */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--primary-color);
+  animation: spin 1s ease-in-out infinite;
+  margin-top: 20px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Refresh information */
+.refresh-info {
+  text-align: center;
+  color: var(--light-text);
+  font-size: 0.9rem;
+  margin-top: 20px;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #f5f5f5;
+  color: var(--light-text);
+  font-size: 0.9rem;
+}
+
+/* Utility classes */
+.hidden {
+  display: none !important;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.error {
+  color: var(--accent-color);
+  text-align: center;
+  padding: 20px;
+}
+
+/* Buttons */
+.button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.button:hover, .button:focus {
+  background-color: #2c5282;
+}
+
+.button:focus {
+  outline: var(--focus-outline);
+  outline-offset: 2px;
+}
+
+.text-button {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.text-button:hover, .text-button:focus {
+  color: #2c5282;
+}
+
+.text-button:focus {
+  outline: var(--focus-outline);
+  outline-offset: 2px;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+}
+
+.modal-content h2 {
+  margin-bottom: 15px;
+}
+
+.modal-content p {
+  margin-bottom: 15px;
+}
+
+.modal-content button {
+  margin-top: 15px;
+}
+
+/* No JavaScript warning */
+.no-js-warning {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+/* Location controls */
+#location-controls {
+  margin-top: 15px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  body {
+    padding: 10px;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  .poem-box {
+    padding: 20px;
+  }
+  
+  #poem-text {
+    font-size: 1rem;
+  }
+  
+  .modal-content {
+    padding: 20px;
+    width: 95%;
+  }
+}
+
+/* Focus styles for accessibility */
+a:focus, button:focus, [tabindex="0"]:focus {
+  outline: var(--focus-outline);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (forced-colors: active) {
+  .button {
+    border: 1px solid ButtonText;
+  }
+  
+  .spinner {
+    border-color: ButtonText;
+  }
+} 

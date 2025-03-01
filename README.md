@@ -26,6 +26,10 @@ The generated poems take into account contextual factors like time of day, seaso
   - `test_integration.py`: Tests the complete pipeline
   - `test_data_process.py`: Created during testing for small dataset generation
 - `test_model`: Contains template Modelfile for Ollama integration
+- `poem-app`: Web application for generating poems
+  - `server.js`: Express server with API endpoints
+  - `services/`: Backend services for Ollama integration
+  - `public/`: Frontend files (HTML, CSS, JavaScript)
 - `venv`: Virtual environment (created during setup)
 
 ## Setup
@@ -137,6 +141,78 @@ python src/generate_poem.py --interactive
 python src/generate_poem.py --model llama3.1:8b --time "18:30" --date "2023-10-21" --location "Paris" --temperature 0.7
 ```
 
+## Web Application
+
+The project includes a web application in the `poem-app` directory that provides a user-friendly interface for generating poems based on the user's location and current time.
+
+### Features
+
+- Automatically detects the user's location (with permission)
+- Generates poems based on location, time of day, and date
+- Refreshes the poem every minute
+- Responsive design for mobile and desktop
+- Accessibility features for screen readers and keyboard navigation
+
+### Running the Web Application
+
+1. Navigate to the poem-app directory:
+```
+cd poem-app
+```
+
+2. Install dependencies:
+```
+npm install
+```
+
+3. Make sure Ollama is running with the poem-generator model:
+```
+ollama run poem-generator
+```
+
+4. Start the server:
+```
+node server.js
+```
+
+5. Open your browser and navigate to:
+```
+http://localhost:3000
+```
+
+### Configuration
+
+You can modify the following settings in the `.env` file:
+
+```
+# Server configuration
+PORT=3000
+
+# Ollama configuration
+OLLAMA_API_URL=http://localhost:11434
+MODEL_NAME=poem-generator
+
+# Rate limiting
+RATE_LIMIT_WINDOW_MS=60000
+RATE_LIMIT_MAX_REQUESTS=60
+```
+
+### Troubleshooting Common Issues
+
+1. **429 Too Many Requests Error**
+   - This can occur if the rate limit is too restrictive
+   - Increase the `RATE_LIMIT_MAX_REQUESTS` value in the `.env` file
+   - Default is now set to 60 requests per minute
+
+2. **Ollama Connection Issues**
+   - Ensure Ollama is running: `ollama list`
+   - Verify the correct API URL in `.env`: `OLLAMA_API_URL=http://localhost:11434`
+   - Make sure the poem-generator model is available: `ollama run poem-generator`
+
+3. **JavaScript Errors**
+   - Check the browser console for any errors
+   - The application uses modern JavaScript features, ensure you're using an up-to-date browser
+
 ## Poem Generation
 
 The generation script (`generate_poem.py`) works by:
@@ -224,6 +300,38 @@ Wheeling's spirit is resilient, forged from steel and coal,
 And on March 1st's morning dew, its beauty starts to unfold.
 ```
 
+### Example 3: Afternoon in Reno
+
+**Input:** 3:22 PM, Sat Mar 1, Reno NV
+
+**Output:**
+```
+"In Reno's desert heart, where sunbeams play
+At twenty-two past three, on March's first day
+The world awakens, with a hint of spring's sway
+As Nevada's high desert stretches out to gaze.
+
+The Truckee River whispers secrets to the trees,
+As willows and cottonwoods dance in gentle breeze
+The mountains stand watch, a granite sentinel strong
+Protecting the city's vibrant soul, where hearts belong
+
+In this moment, time stands still, yet moves so fast
+The world outside these streets is rushing past
+But here, amidst the casinos' neon glow
+A different rhythm beats, as the people go.
+
+Their faces, etched with lines of love and strife
+Reflect the tales of lives lived hard, with hearts full of life
+The smell of fresh-cut grass wafts through the air
+As winter's chill begins to fade, and spring's promise is shared
+
+In Reno, on this first day of March's new start
+Hope stirs, like a river flowing from the heart
+A city born of dreams, where outcasts came to thrive
+Now a tapestry rich with stories, woven alive."
+```
+
 ## Models
 
 The project works with the following Ollama models:
@@ -249,6 +357,26 @@ This will:
 - Create a sample Modelfile
 - Test poem generation using an existing Ollama model
 
+## Recent Fixes and Improvements
+
+The following issues have been fixed in the web application:
+
+1. **API URL Configuration**
+   - Fixed incorrect Ollama API URL in `.env` file
+   - Changed from `http://localhost:11434/api/generate` to `http://localhost:11434`
+   - This prevents malformed URL requests to Ollama
+
+2. **Rate Limiting Adjustment**
+   - Increased rate limit from 10 to 60 requests per minute
+   - This accommodates multiple API calls made during each user request
+
+3. **JavaScript Variable Name Conflict**
+   - Fixed a variable name conflict in the `displayPoem` function
+   - Renamed parameter from `poemContent` to `poemContentData` to avoid conflict with DOM element
+   - This resolves the TypeError: "Cannot read properties of undefined (reading 'remove')"
+
+These fixes ensure the web application can properly connect to Ollama and display poems without JavaScript errors.
+
 ## Limitations and Future Improvements
 
 Current limitations:
@@ -263,6 +391,8 @@ Potential improvements:
 - Add evaluation metrics for poem quality
 - Implement user feedback mechanism
 - Expand model compatibility
+- Add caching to reduce API calls to Ollama
+- Implement progressive enhancement for browsers without JavaScript
 
 ## License
 

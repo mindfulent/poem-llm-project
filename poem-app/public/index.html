@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A web application that generates poems based on your location and the current time">
+  <title>Location-Based Poem Generator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Poem of the Moment</h1>
+      <p class="subtitle">Poems inspired by your location and the current time</p>
+    </header>
+    
+    <main>
+      <section aria-labelledby="location-heading" class="info-box">
+        <h2 id="location-heading" class="visually-hidden">Location Information</h2>
+        <div id="location-info">
+          <p>
+            <span id="location-label">Location:</span> 
+            <span id="location-display" aria-live="polite">Waiting for location...</span>
+          </p>
+          <p>
+            <span id="time-label">Time:</span> 
+            <span id="time-display" aria-live="polite">--:--</span>
+          </p>
+          <p>
+            <span id="date-label">Date:</span> 
+            <span id="date-display" aria-live="polite">----/--/--</span>
+          </p>
+        </div>
+        
+        <div id="location-controls">
+          <button 
+            id="refresh-location" 
+            class="button" 
+            aria-label="Refresh location"
+            tabindex="0">
+            Refresh Location
+          </button>
+        </div>
+      </section>
+      
+      <section aria-labelledby="poem-heading" class="poem-box">
+        <h2 id="poem-heading" class="visually-hidden">Generated Poem</h2>
+        
+        <div id="loading" class="loading" aria-live="polite">
+          <p>Generating your poem...</p>
+          <div class="spinner" role="progressbar" aria-label="Generating poem"></div>
+        </div>
+        
+        <div id="poem-content" class="hidden" aria-live="polite">
+          <h2 id="poem-title"></h2>
+          <pre id="poem-text" tabindex="0"></pre>
+        </div>
+        
+        <div id="error-message" class="error hidden" aria-live="assertive">
+          <p>Sorry, we couldn't generate a poem. Please try again later.</p>
+          <button 
+            id="retry-button" 
+            class="button" 
+            aria-label="Try again"
+            tabindex="0">
+            Try Again
+          </button>
+        </div>
+      </section>
+      
+      <section aria-labelledby="refresh-heading" class="refresh-info">
+        <h2 id="refresh-heading" class="visually-hidden">Refresh Information</h2>
+        <p>Your poem will refresh automatically every minute</p>
+        <p>Next refresh in <span id="countdown" aria-live="polite">60</span> seconds</p>
+      </section>
+    </main>
+    
+    <footer>
+      <p>Powered by a fine-tuned LLM model trained on poetry</p>
+      <p>
+        <button 
+          id="about-button" 
+          class="text-button" 
+          aria-label="About this application"
+          tabindex="0">
+          About
+        </button>
+      </p>
+    </footer>
+    
+    <div id="about-modal" class="modal hidden" role="dialog" aria-labelledby="modal-title" aria-modal="true">
+      <div class="modal-content">
+        <h2 id="modal-title">About This Application</h2>
+        <p>This application uses a fine-tuned language model to generate poems based on your current location and time.</p>
+        <p>The poems are generated to reflect the atmosphere, time of day, and seasonal context of your current moment.</p>
+        <p>Your location is only used to generate the poem and is not stored or shared.</p>
+        <button id="close-modal" class="button" aria-label="Close">Close</button>
+      </div>
+    </div>
+    
+    <div id="no-js" class="no-js-warning">
+      <p>This application requires JavaScript to function. Please enable JavaScript in your browser settings.</p>
+    </div>
+  </div>
+  
+  <script src="script.js"></script>
+  <script>
+    // Remove no-js warning if JavaScript is enabled
+    document.getElementById('no-js').style.display = 'none';
+  </script>
+</body>
+</html> 
