@@ -147,6 +147,27 @@ app.get('/api/health', async (req, res) => {
   }
 });
 
+// API endpoint to get location name from coordinates
+app.get('/api/location', async (req, res) => {
+  try {
+    const { latitude, longitude } = req.query;
+    
+    // Validate coordinates
+    if (!latitude || !longitude || !validateCoordinates(latitude, longitude)) {
+      return res.status(400).json({ error: 'Valid latitude and longitude are required' });
+    }
+    
+    // Get location information
+    const locationData = await getLocationInfo(latitude, longitude);
+    const locationName = formatLocationInfo(locationData);
+    
+    res.json({ locationName });
+  } catch (error) {
+    console.error('Error getting location name:', error);
+    res.status(500).json({ error: 'Failed to get location name', details: error.message });
+  }
+});
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

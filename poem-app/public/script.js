@@ -129,7 +129,8 @@ document.addEventListener('DOMContentLoaded', () => {
             longitude: position.coords.longitude
           };
           
-          locationDisplay.textContent = `${userLocation.latitude.toFixed(4)}, ${userLocation.longitude.toFixed(4)}`;
+          // Fetch location name instead of displaying coordinates
+          fetchLocationName(userLocation.latitude, userLocation.longitude);
           
           // Generate the first poem
           generatePoem();
@@ -174,15 +175,51 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   /**
+   * Fetch location name from coordinates
+   * @param {number} latitude - The latitude coordinate
+   * @param {number} longitude - The longitude coordinate
+   */
+  async function fetchLocationName(latitude, longitude) {
+    try {
+      locationDisplay.textContent = 'Finding location name...';
+      
+      const response = await fetch(`/api/location?latitude=${latitude}&longitude=${longitude}`);
+      
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      if (data && data.locationName) {
+        locationDisplay.textContent = data.locationName;
+      } else {
+        // Fallback to coordinates if no location name is available
+        locationDisplay.textContent = `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
+      }
+    } catch (error) {
+      console.error('Error fetching location name:', error);
+      // Fallback to coordinates if there's an error
+      locationDisplay.textContent = `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
+    }
+  }
+  
+  /**
    * Update the time and date displays
    */
   function updateTimeAndDate() {
     const now = new Date();
     
-    // Format time (HH:MM)
-    const hours = String(now.getHours()).padStart(2, '0');
+    // Format time (HH:MM AM/PM)
+    let hours = now.getHours();
     const minutes = String(now.getMinutes()).padStart(2, '0');
-    const timeString = `${hours}:${minutes}`;
+    const period = hours >= 12 ? 'PM' : 'AM';
+    
+    // Convert to 12-hour format
+    hours = hours % 12;
+    hours = hours ? hours : 12; // Convert 0 to 12 for 12 AM
+    
+    const timeString = `${hours}:${minutes} ${period}`;
     
     // Format date (YYYY-MM-DD)
     const year = now.getFullYear();
@@ -209,6 +246,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     try {
       const now = new Date();
+      
+      // Format time in 24-hour format for the server
       const timeString = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
       const dateString = now.toISOString().slice(0, 10);
       

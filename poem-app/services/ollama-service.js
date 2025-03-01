@@ -77,8 +77,14 @@ async function generatePoem(location, time, date) {
   try {
     console.log(`Generating poem for ${location} at ${time} on ${date}`);
     
+    // Format time to 12-hour AM/PM format
+    const [hours, minutes] = time.split(':').map(Number);
+    const period = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 || 12; // Convert 0 to 12 for 12 AM
+    const formattedTime = `${formattedHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+    
     // Construct the prompt
-    const prompt = ` ${time}, ${date}, ${location}`;
+    const prompt = ` ${formattedTime}, ${date}, ${location}`;
     
     console.log('Sending request to Ollama API with prompt:', prompt);
     
