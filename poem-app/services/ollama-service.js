@@ -78,7 +78,7 @@ async function generatePoem(location, time, date) {
     console.log(`Generating poem for ${location} at ${time} on ${date}`);
     
     // Construct the prompt
-    const prompt = `Write a poem about ${location} at ${time} on ${date}. The poem should be evocative and reflect the mood of the time and place.`;
+    const prompt = ` ${time}, ${date}, ${location}`;
     
     console.log('Sending request to Ollama API with prompt:', prompt);
     
