@@ -1,0 +1,77 @@
+[
+  {
+    "title": "Test Poem 1",
+    "time": "20:21",
+    "date": "2023-02-06",
+    "location": "Paris",
+    "content": "This is test poem number 1\nWith multiple lines\nFor testing purposes\nWith love from the test suite.",
+    "metadata": {
+      "time_of_day": "day",
+      "season": "spring",
+      "themes": [
+        "test",
+        "poem"
+      ]
+    }
+  },
+  {
+    "title": "Test Poem 2",
+    "time": "04:49",
+    "date": "2023-12-14",
+    "location": "Tokyo",
+    "content": "This is test poem number 2\nWith multiple lines\nFor testing purposes\nWith love from the test suite.",
+    "metadata": {
+      "time_of_day": "evening",
+      "season": "spring",
+      "themes": [
+        "test",
+        "poem"
+      ]
+    }
+  },
+  {
+    "title": "Test Poem 3",
+    "time": "09:43",
+    "date": "2023-12-06",
+    "location": "Paris",
+    "content": "This is test poem number 3\nWith multiple lines\nFor testing purposes\nWith love from the test suite.",
+    "metadata": {
+      "time_of_day": "morning",
+      "season": "autumn",
+      "themes": [
+        "test",
+        "poem"
+      ]
+    }
+  },
+  {
+    "title": "Test Poem 4",
+    "time": "20:49",
+    "date": "2023-06-28",
+    "location": "New York",
+    "content": "This is test poem number 4\nWith multiple lines\nFor testing purposes\nWith love from the test suite.",
+    "metadata": {
+      "time_of_day": "night",
+      "season": "autumn",
+      "themes": [
+        "test",
+        "poem"
+      ]
+    }
+  },
+  {
+    "title": "Test Poem 5",
+    "time": "06:44",
+    "date": "2023-04-19",
+    "location": "Paris",
+    "content": "This is test poem number 5\nWith multiple lines\nFor testing purposes\nWith love from the test suite.",
+    "metadata": {
+      "time_of_day": "morning",
+      "season": "winter",
+      "themes": [
+        "test",
+        "poem"
+      ]
+    }
+  }
+]
