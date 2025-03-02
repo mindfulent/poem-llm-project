@@ -41,3 +41,11 @@ Thumbs.db
 .vscode/
 *.swp
 *.swo 
+
+# Docs
+docs/
+docs/deploy-to-do.md
+
+# Digital Ocean-Specific
+deploy.sh
+snapshot-manager.sh
